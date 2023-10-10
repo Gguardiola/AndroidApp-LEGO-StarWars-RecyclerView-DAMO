@@ -26,15 +26,19 @@ public class CharacterRecyclerViewAdapter extends RecyclerView.Adapter<Character
     private Context context;
     private OnClickListener onClickListener;
 
+    private Button editBtn, deleteBtn;
+
     private int selectedItem;
 
     private MyViewHolder lastItem = null;
 
 
 
-    public CharacterRecyclerViewAdapter(ArrayList<characterDAMO> lchars, Context context) {
+    public CharacterRecyclerViewAdapter(ArrayList<characterDAMO> lchars, Button deleteBtn, Button editBtn, Context context) {
         this.lchars = lchars;
         this.context = context;
+        this.editBtn = editBtn;
+        this.deleteBtn = deleteBtn;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -85,6 +89,8 @@ public class CharacterRecyclerViewAdapter extends RecyclerView.Adapter<Character
                     lastItem = holder;
                     holder.charCard.setBackgroundColor(Color.parseColor("#D4EFDF"));
                     setSelectedItem(position);
+                    deleteBtn.setEnabled(true);
+                    editBtn.setEnabled(true);
                 }
             }
         });

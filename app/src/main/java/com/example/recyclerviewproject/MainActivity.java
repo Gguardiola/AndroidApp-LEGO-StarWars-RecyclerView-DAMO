@@ -1,5 +1,6 @@
 package com.example.recyclerviewproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -107,24 +109,44 @@ public class MainActivity extends AppCompatActivity {
         //CAMBIAR!
         lChars = getCharactersData();
 
+        deleteBtn = (Button) findViewById(R.id.delete_btn);
+        deleteBtn.setEnabled(false);
+        AddNewCharBtn = (Button) findViewById(R.id.add_btn);
+        editBtn = (Button) findViewById(R.id.edit_btn);
+        editBtn.setEnabled(false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to delete this character?")
+                .setTitle("Delete")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // CONFIRM
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // CANCEL
+                    }
+                });
+        // Create the AlertDialog object and return it
+        AlertDialog deleteDialog = builder.create();
+
         CharacterRecyclerViewAdapter adapter;
-        adapter = new CharacterRecyclerViewAdapter(lChars, getApplicationContext());
+        adapter = new CharacterRecyclerViewAdapter(lChars, deleteBtn, editBtn, getApplicationContext());
         RecyclerView.LayoutManager l = new LinearLayoutManager(getApplicationContext());
         charList.setLayoutManager(l);
         charList.setItemAnimator(new DefaultItemAnimator());
         charList.setAdapter(adapter);
 
-        deleteBtn = (Button) findViewById(R.id.delete_btn);
-        deleteBtn.setEnabled(false);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedItem = lChars.get(adapter.getSelectedItem());
                 Log.d("ITEM TO DELETE", String.valueOf(selectedItem.getName()));
+                deleteDialog.show();
             }
         });
 
-        AddNewCharBtn = (Button) findViewById(R.id.add_btn);
         AddNewCharBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,18 +157,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        editBtn = (Button) findViewById(R.id.edit_btn);
-        editBtn.setEnabled(false);
 
-        charList.setOnContextClickListener(new View.OnContextClickListener() {
-            @Override
-            public boolean onContextClick(View view) {
-                editBtn.setEnabled(true);
-                deleteBtn.setEnabled(true);
-                return false;
-            }
-        });
 
 
     }
 }
+
