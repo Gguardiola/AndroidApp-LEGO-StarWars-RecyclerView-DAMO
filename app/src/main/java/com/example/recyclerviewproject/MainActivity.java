@@ -90,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
             lchars.add(cDAMO);
             c.moveToNext();
         }
-
-
         return lchars;
     };
 
@@ -151,7 +149,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), GetCharactersData.class);
-                intent.putExtra("salutacio", "Benvingut");
+                intent.putExtra("", "Benvingut");
+
+                startActivity(intent);
+            }
+        });
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), GetCharactersData.class);
+                intent.putExtra("currentCharacter", selectedItem);
 
                 startActivity(intent);
             }
