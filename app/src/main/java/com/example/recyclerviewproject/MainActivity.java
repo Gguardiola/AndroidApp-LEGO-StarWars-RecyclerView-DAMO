@@ -1,5 +1,10 @@
 package com.example.recyclerviewproject;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -12,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -53,6 +59,19 @@ public class MainActivity extends AppCompatActivity {
         db.insert("characters", null, values);
     }
 
+    public boolean deleteData(int idToDelete) {
+        try{
+            db.execSQL("DELETE FROM characters WHERE id =="+idToDelete);
+            return true;
+        }
+        catch(SQLiteException e){
+            Log.e("DELETE ERROR",String.valueOf(e));
+            return false;
+        }
+        //TODO: context failure
+
+    }
+
     public void showData() {
         Cursor c = db.rawQuery("SELECT * FROM characters", null);
         c.moveToFirst();
@@ -68,16 +87,16 @@ public class MainActivity extends AppCompatActivity {
     }
     private ArrayList<characterDAMO> getCharactersData() {
 
-        insertData(1, "Boba Fett", "Bountyhunter", R.drawable.boba);
-        insertData(2, "Clone Trooper", "Republic soldier", R.drawable.clone);
-        insertData(3, "Jawa", "Alien", R.drawable.jawa);
-        insertData(4, "Krell", "Jedi",R.drawable.krell);
-        insertData(5, "Obi-wan", "Jedi",R.drawable.obi);
-        insertData(6, "Yoda", "Jedi",R.drawable.yoda);
-        insertData(7, "Qui-gon", "Jedi",R.drawable.quigon);
-        insertData(8, "Darth Maul", "Lord Sith",R.drawable.maul);
-        insertData(9, "Akbar", "Moncalamari",R.drawable.akbar);
-        insertData(10, "Darth Vader", "Lord Sith",R.drawable.vader);
+       // insertData(1, "Boba Fett", "Bountyhunter", R.drawable.boba);
+       // insertData(2, "Clone Trooper", "Republic soldier", R.drawable.clone);
+       // insertData(3, "Jawa", "Alien", R.drawable.jawa);
+       // insertData(4, "Krell", "Jedi",R.drawable.krell);
+       // insertData(5, "Obi-wan", "Jedi",R.drawable.obi);
+       // insertData(6, "Yoda", "Jedi",R.drawable.yoda);
+       // insertData(7, "Qui-gon", "Jedi",R.drawable.quigon);
+       // insertData(8, "Darth Maul", "Lord Sith",R.drawable.maul);
+       // insertData(9, "Akbar", "Moncalamari",R.drawable.akbar);
+       // insertData(10, "Darth Vader", "Lord Sith",R.drawable.vader);
 
         ArrayList<characterDAMO> lchars = new ArrayList<characterDAMO>();
 
@@ -92,9 +111,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return lchars;
     };
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,12 +129,26 @@ public class MainActivity extends AppCompatActivity {
         editBtn = (Button) findViewById(R.id.edit_btn);
         editBtn.setEnabled(false);
 
+        CharacterRecyclerViewAdapter adapter;
+        adapter = new CharacterRecyclerViewAdapter(lChars, deleteBtn, editBtn, getApplicationContext());
+        RecyclerView.LayoutManager l = new LinearLayoutManager(getApplicationContext());
+        charList.setLayoutManager(l);
+        charList.setItemAnimator(new DefaultItemAnimator());
+        charList.setAdapter(adapter);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to delete this character?")
                 .setTitle("Delete")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // CONFIRM
+                        if(deleteData(selectedItem.getId())){
+                            Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                            lChars = getCharactersData();
+                            adapter.setItems(lChars);
+                            adapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -129,12 +159,6 @@ public class MainActivity extends AppCompatActivity {
         // Create the AlertDialog object and return it
         AlertDialog deleteDialog = builder.create();
 
-        CharacterRecyclerViewAdapter adapter;
-        adapter = new CharacterRecyclerViewAdapter(lChars, deleteBtn, editBtn, getApplicationContext());
-        RecyclerView.LayoutManager l = new LinearLayoutManager(getApplicationContext());
-        charList.setLayoutManager(l);
-        charList.setItemAnimator(new DefaultItemAnimator());
-        charList.setAdapter(adapter);
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,13 +169,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ActivityResultLauncher<Intent> getCharacterDataLauncher=registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result != null && result.getResultCode() == RESULT_OK){
+                            if(result.getData() != null){
+                                Log.d("ACTIVITY RES",String.valueOf(result.getData().getStringExtra("name")));
+                            }
+                        }
+                    }
+                }
+        );
+
         AddNewCharBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), GetCharactersData.class);
-                intent.putExtra("", "Benvingut");
-
-                startActivity(intent);
+                intent.putExtra("currentCharacter", "Boba Fett");
+                getCharacterDataLauncher.launch(intent);
             }
         });
 
@@ -159,9 +196,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), GetCharactersData.class);
-                intent.putExtra("currentCharacter", selectedItem);
-
-                startActivity(intent);
+                intent.putExtra("currentCharacter", "Boba Fett");
+                getCharacterDataLauncher.launch(intent);
             }
         });
 

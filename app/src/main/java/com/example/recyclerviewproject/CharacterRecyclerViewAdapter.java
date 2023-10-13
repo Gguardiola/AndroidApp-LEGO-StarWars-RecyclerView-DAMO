@@ -35,7 +35,7 @@ public class CharacterRecyclerViewAdapter extends RecyclerView.Adapter<Character
 
 
     public CharacterRecyclerViewAdapter(ArrayList<characterDAMO> lchars, Button deleteBtn, Button editBtn, Context context) {
-        this.lchars = lchars;
+        this.lchars = new ArrayList<>(lchars);
         this.context = context;
         this.editBtn = editBtn;
         this.deleteBtn = deleteBtn;
@@ -94,9 +94,7 @@ public class CharacterRecyclerViewAdapter extends RecyclerView.Adapter<Character
                 }
             }
         });
-
     }
-
     private void setSelectedItem(int position){
         this.selectedItem = position;
         Log.d("ITEM SELECTED: ", String.valueOf(lchars.get(selectedItem).getName()));
@@ -107,6 +105,10 @@ public class CharacterRecyclerViewAdapter extends RecyclerView.Adapter<Character
     }
     public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
+    }
+
+    public void setItems(ArrayList<characterDAMO> lchars) {
+        this.lchars = lchars;
     }
 
     public interface OnClickListener {
