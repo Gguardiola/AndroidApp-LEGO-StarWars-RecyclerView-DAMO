@@ -13,7 +13,10 @@
         android:theme="@style/Theme.RecyclerViewProject"
         tools:targetApi="31">
         <activity
-            android:name=".GetCharactersData"
+            android:name=".EditSelectedCharacter"
+            android:exported="false" />
+        <activity
+            android:name=".AddNewCharacter"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

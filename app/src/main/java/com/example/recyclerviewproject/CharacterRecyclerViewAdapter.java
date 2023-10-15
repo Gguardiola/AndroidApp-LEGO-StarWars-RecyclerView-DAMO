@@ -74,8 +74,8 @@ public class CharacterRecyclerViewAdapter extends RecyclerView.Adapter<Character
     public void onBindViewHolder(@NonNull CharacterRecyclerViewAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.nameTxt.setText(lchars.get(position).getName());
-        holder.descTxt.setText(lchars.get(position).getDescription());
-        holder.imatgeImg.setImageResource(lchars.get(position).getImage());
+        holder.descTxt.setText(lchars.get(position).getType());
+        holder.imatgeImg.setImageBitmap(lchars.get(position).getImage());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

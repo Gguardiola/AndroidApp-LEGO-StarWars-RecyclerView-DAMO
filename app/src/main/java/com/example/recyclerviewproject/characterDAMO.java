@@ -1,18 +1,30 @@
 package com.example.recyclerviewproject;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.io.Serializable;
 
 public class characterDAMO implements Serializable {
     private int id;
     private String name;
-    private String description;
-    private int image;
+    private String type, planet, affiliations;
+    private byte[] image;
 
-    public characterDAMO (int id, String name, String description, int image) {
+    public characterDAMO (int id, String name, String type, String planet, String affiliations, byte[] image) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        this.type = type;
+        this.planet = planet;
+        this.affiliations = affiliations;
         this.image = image;
+    }
+    public String getPlanet() {
+        return planet;
+    }
+
+    public String getAffiliations() {
+        return affiliations;
     }
 
     public int getId() {
@@ -31,19 +43,21 @@ public class characterDAMO implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getType() {
+        return type;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public int getImage() {
-        return image;
+    public Bitmap getImage() {
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+        return bitmap;
     }
 
-    public void setImage(int image) {
-        this.image = image;
-    }
+   // public void setImage(int image) {
+   //     this.image = image;
+   // }
 }
