@@ -15,9 +15,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +27,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AddNewCharacter extends AppCompatActivity {
+import kotlinx.coroutines.flow.AbstractFlow;
+
+public class AddNewCharacter extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Button sendBtn, imgBtn, cancelBtn;
     private ImageView imagePreview;
-    private EditText nameEdit,typeEdit,planetEdit,affEdit;
-
+    private EditText nameEdit,typeEdit;
+    private String planetSelected, affSelected;
     int SELECT_PICTURE = 200;
 
     private byte[] selectedImage = null;
@@ -85,11 +89,15 @@ public class AddNewCharacter extends AppCompatActivity {
         sendBtn = (Button) findViewById(R.id.add_btn3);
         cancelBtn = (Button) findViewById(R.id.cancel_btn);
 
+        Spinner planetSpn = (Spinner) findViewById(R.id.planet_dropdown);
+        planetSpn.setOnItemSelectedListener(this);
+
+        Spinner affSpn = (Spinner) findViewById(R.id.aff_dropdown);
+        affSpn.setOnItemSelectedListener(this);
+
         imgBtn = (Button) findViewById(R.id.img_btn);
         nameEdit = (EditText) findViewById(R.id.name_edt);
         typeEdit = (EditText) findViewById(R.id.type_edt);
-        planetEdit = (EditText) findViewById(R.id.planet_edt);
-        affEdit = (EditText) findViewById(R.id.aff_edt);
         imagePreview = (ImageView) findViewById(R.id.imagePreview);
 
         imgBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,15 +113,15 @@ public class AddNewCharacter extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nameEdit.getText().length() == 0 || typeEdit.getText().length() == 0 || planetEdit.getText().length() == 0 || affEdit.getText().length() == 0 || selectedImage == null){
+                if(nameEdit.getText().length() == 0 || typeEdit.getText().length() == 0 || planetSelected == null || affSelected == null || selectedImage == null){
                     Toast.makeText(AddNewCharacter.this, "Completa todos los campos!", Toast.LENGTH_SHORT).show();
 
                 }else {
                     Intent intent = new Intent(AddNewCharacter.this, MainActivity.class);
                     intent.putExtra("name",nameEdit.getText().toString());
                     intent.putExtra("type",typeEdit.getText().toString());
-                    intent.putExtra("planet",planetEdit.getText().toString());
-                    intent.putExtra("affiliations",affEdit.getText().toString());
+                    intent.putExtra("planet",planetSelected);
+                    intent.putExtra("affiliations",affSelected);
                     intent.putExtra("image", selectedImage);
                     setResult(RESULT_OK, intent);
                     finish();
@@ -130,4 +138,28 @@ public class AddNewCharacter extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if(adapterView.getId() == R.id.aff_dropdown){
+            affSelected = adapterView.getItemAtPosition(i).toString();
+            Log.d("AFF SELECTED",affSelected);
+        }
+        else if(adapterView.getId() == R.id.planet_dropdown){
+            planetSelected = adapterView.getItemAtPosition(i).toString();
+            Log.d("PLANET SELECTED",planetSelected);
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        if(adapterView.getId() == R.id.aff_dropdown){
+            affSelected = null;
+        }
+        else if(adapterView.getId() == R.id.planet_dropdown){
+            planetSelected = null;
+        }
+    }
+
 }

@@ -6,6 +6,43 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="planet_title">Choose a planet</string>
+    <string-array name="planetSelect">
+        <item>Coruscant</item>
+        <item>Mon Cala</item>
+        <item>Kamino</item>
+        <item>Mygeeto</item>
+        <item>Dathomir</item>
+        <item>Tatooine</item>
+        <item>Mustafar</item>
+        <item>Geonosis</item>
+        <item>Kashykk</item>
+        <item>Illum</item>
+        <item>Felucia</item>
+        <item>Hoth</item>
+        <item>Dagobah</item>
+        <item>Corellia</item>
+        <item>Ryloth</item>
+    </string-array>
+
+    <string name="aff_title">Choose affiliation</string>
+    <string-array name="affSelect">
+        <item>Bountyhunter</item>
+        <item>Hutt Clan</item>
+        <item>Grand Army of the Republic</item>
+        <item>Jawa\'s tribe</item>
+        <item>Jedi Order</item>
+        <item>Nightbrothers</item>
+        <item>Moncalamari</item>
+        <item>Empire</item>
+        <item>Nightsisters</item>
+        <item>Rebels</item>
+        <item>The Syndicate</item>
+        <item>Separatist Confederacy</item>
+        <item>Mandalorians</item>
+        <item>Techno Union</item>
+    </string-array>
+
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

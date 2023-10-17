@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         values.put("type", type);
         values.put("planet", planet);
         values.put("affiliations", aff);
-        if(selectedImage != null) values.put("image", selectedImage);
-        db.update("characters", values,"id = ?", new String[]{String.valueOf(id)});
+        if (selectedImage != null) values.put("image", selectedImage);
+        db.update("characters", values, "id = ?", new String[]{String.valueOf(id)});
     }
 
     public void showData() {
