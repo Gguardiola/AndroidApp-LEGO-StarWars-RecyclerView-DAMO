@@ -3,13 +3,10 @@ package com.example.recyclerviewproject;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,19 +17,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import kotlinx.coroutines.flow.AbstractFlow;
-
 public class AddNewCharacter extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Button sendBtn, imgBtn, cancelBtn;
     private ImageView imagePreview;
-    private EditText nameEdit,typeEdit;
+    private EditText nameEdit,typeEdit, ageEdit;
     private String planetSelected, affSelected;
     int SELECT_PICTURE = 200;
 
@@ -67,7 +61,6 @@ public class AddNewCharacter extends AppCompatActivity implements AdapterView.On
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    // do your operation from here....
                     if (data != null && data.getData() != null) {
                         Uri selectedImageUri = data.getData();
                         Bitmap selectedImageBitmap = null;
@@ -98,6 +91,7 @@ public class AddNewCharacter extends AppCompatActivity implements AdapterView.On
         imgBtn = (Button) findViewById(R.id.img_btn);
         nameEdit = (EditText) findViewById(R.id.name_edt);
         typeEdit = (EditText) findViewById(R.id.type_edt);
+        ageEdit = (EditText) findViewById(R.id.age_edt);
         imagePreview = (ImageView) findViewById(R.id.imagePreview);
 
         imgBtn.setOnClickListener(new View.OnClickListener() {
@@ -113,13 +107,14 @@ public class AddNewCharacter extends AppCompatActivity implements AdapterView.On
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nameEdit.getText().length() == 0 || typeEdit.getText().length() == 0 || planetSelected == null || affSelected == null || selectedImage == null){
+                if(nameEdit.getText().length() == 0 || typeEdit.getText().length() == 0 || ageEdit.getText().length() == 0 || planetSelected == null || affSelected == null || selectedImage == null){
                     Toast.makeText(AddNewCharacter.this, "Completa todos los campos!", Toast.LENGTH_SHORT).show();
 
                 }else {
                     Intent intent = new Intent(AddNewCharacter.this, MainActivity.class);
                     intent.putExtra("name",nameEdit.getText().toString());
                     intent.putExtra("type",typeEdit.getText().toString());
+                    intent.putExtra("age",ageEdit.getText().toString());
                     intent.putExtra("planet",planetSelected);
                     intent.putExtra("affiliations",affSelected);
                     intent.putExtra("image", selectedImage);

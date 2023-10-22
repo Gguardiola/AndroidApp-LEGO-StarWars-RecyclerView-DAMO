@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -54,6 +55,7 @@
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -73,7 +75,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/charList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="80dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 

@@ -6,15 +6,16 @@ import android.graphics.BitmapFactory;
 import java.io.Serializable;
 
 public class characterDAMO implements Serializable {
-    private int id;
+    private int id, age;
     private String name;
     private String type, planet, affiliations;
     private byte[] image;
 
-    public characterDAMO (int id, String name, String type, String planet, String affiliations, byte[] image) {
+    public characterDAMO (int id, String name, String type, int age, String planet, String affiliations, byte[] image) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.age = age;
         this.planet = planet;
         this.affiliations = affiliations;
         this.image = image;
@@ -39,12 +40,19 @@ public class characterDAMO implements Serializable {
         return name;
     }
 
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {

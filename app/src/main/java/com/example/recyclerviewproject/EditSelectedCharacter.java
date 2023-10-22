@@ -27,9 +27,10 @@ import java.io.InputStream;
 public class EditSelectedCharacter extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Button testBtn, imgBtn, cancelBtn;
     private ImageView imagePreview;
-    private EditText nameEdit,typeEdit;
+    private EditText nameEdit,typeEdit, ageEdit;
     private characterDAMO currentCharacter;
-    private String currentName, currentType, currentPlanet, currentAff;
+    private String currentName, currentType, currentPlanet, currentAff, currentAge;
+
 
     private String planetSelected, affSelected;
     private int currentId, indexAff, indexPlanet;
@@ -77,6 +78,7 @@ public class EditSelectedCharacter extends AppCompatActivity implements AdapterV
         currentId = intent.getIntExtra("id",0);
         currentName = intent.getStringExtra("name");
         currentType = intent.getStringExtra("type");
+        currentAge = intent.getStringExtra("age");
         currentPlanet = intent.getStringExtra("planet");
         currentAff = intent.getStringExtra("aff");
         currentImage = intent.getParcelableExtra("image");
@@ -95,10 +97,12 @@ public class EditSelectedCharacter extends AppCompatActivity implements AdapterV
 
         nameEdit = (EditText) findViewById(R.id.name_edt);
         typeEdit = (EditText) findViewById(R.id.type_edt);
+        ageEdit = (EditText) findViewById(R.id.age_edt);
         imagePreview = (ImageView) findViewById(R.id.imagePreview);
 
         nameEdit.setText(currentName);
         typeEdit.setText(currentType);
+        ageEdit.setText(currentAge);
         affSelected = currentAff;
         planetSelected = currentPlanet;
 
@@ -150,7 +154,7 @@ public class EditSelectedCharacter extends AppCompatActivity implements AdapterV
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nameEdit.getText().length() == 0 || typeEdit.getText().length() == 0 || planetSelected == null || affSelected == null){
+                if(nameEdit.getText().length() == 0 || typeEdit.getText().length() == 0 || ageEdit.getText().length() == 0 || planetSelected == null || affSelected == null){
                     Toast.makeText(EditSelectedCharacter.this, "Completa todos los campos!", Toast.LENGTH_SHORT).show();
 
                 }else {
@@ -158,6 +162,7 @@ public class EditSelectedCharacter extends AppCompatActivity implements AdapterV
                     intent.putExtra("id",currentId);
                     intent.putExtra("name",nameEdit.getText().toString());
                     intent.putExtra("type",typeEdit.getText().toString());
+                    intent.putExtra("age",ageEdit.getText().toString());
                     intent.putExtra("planet",planetSelected);
                     intent.putExtra("affiliations",affSelected);
                     if(selectedImage != null) intent.putExtra("changedImage", selectedImage);

@@ -84,7 +84,7 @@ public class CharacterRecyclerViewAdapter extends RecyclerView.Adapter<Character
                 }
                 else{
                     if(lastItem != null) {
-                        lastItem.charCard.setBackgroundColor(Color.WHITE);
+                        lastItem.charCard.setBackgroundColor(Color.parseColor("#EEEEEE"));
                     }
                     lastItem = holder;
                     holder.charCard.setBackgroundColor(Color.parseColor("#D4EFDF"));
@@ -98,6 +98,11 @@ public class CharacterRecyclerViewAdapter extends RecyclerView.Adapter<Character
     private void setSelectedItem(int position){
         this.selectedItem = position;
         Log.d("ITEM SELECTED: ", String.valueOf(lchars.get(selectedItem).getName()));
+    }
+
+    public void clearSelected(){
+        lastItem.charCard.setBackgroundColor(Color.parseColor("#EEEEEE"));
+
     }
 
     public int getSelectedItem(){
